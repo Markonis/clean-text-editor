@@ -24,8 +24,7 @@ export default class Editor {
 		this.history.pushState({
 			html: this.element.innerHTML,
 			offset: 0,
-			gravity: 'end',
-			nodes: []
+			gravity: 'end'
 		});
 
 		this.element.onkeydown = event => {

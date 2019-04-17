@@ -1,8 +1,7 @@
 import { EditorState } from "./data-model";
-import { getTextOffset, getCaretGravity, restoreTextOffset } from "./text-offset";
-import { cleanUp } from "./sanitization";
 import { HistoryStack } from "./history-stack";
-import childrenDataNodes from "./html-to-data";
+import { cleanUp } from "./sanitization";
+import { getCaretGravity, getTextOffset, restoreTextOffset } from "./text-offset";
 
 export function oninput(
 	editorElement: Element,
@@ -13,11 +12,10 @@ export function oninput(
 	const gravity = getCaretGravity();
 
 	cleanUp(editorElement);
-	// console.log(childrenDataNodes(editorElement));
 	const html = editorElement.innerHTML;
 
 	if (html !== state.html) {
-		editorHistory.pushState({ html, offset, gravity, nodes: [] });
+		editorHistory.pushState({ html, offset, gravity });
 		restoreState(editorElement, editorHistory.currentState());
 	}
 }

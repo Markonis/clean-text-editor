@@ -7,7 +7,6 @@ export type NodeType = 'h' | 'p' | 'ul' | 'ol' | 'li' | 'b' | 'i' | 'em' | 'stro
 
 export interface EditorState {
 	html: string
-	nodes: EditorNode[]
 	gravity: CaretGravity
 	offset: number
 }
