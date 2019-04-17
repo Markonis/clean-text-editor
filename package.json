@@ -1,0 +1,31 @@
+{
+	"name": "@markonis/clean-text-editor",
+	"version": "0.0.1",
+	"description": "A simple no-fuss WYSIWYG editor written in typescript",
+	"main": "index.js",
+	"scripts": {
+		"start": "parcel src/index.html"
+	},
+	"author": "Marko Pavlović <marko@affine.tech> (https://affine.tech)",
+	"license": "MIT",
+	"dependencies": {
+		"dompurify": "^1.0.10"
+	},
+	"devDependencies": {
+		"@types/dompurify": "^0.0.32",
+		"parcel": "^1.12.3",
+		"typescript": "^3.4.3"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Markonis/clean-text-editor.git"
+	},
+	"keywords": [
+		"WYSIWYG",
+		"editor"
+	],
+	"bugs": {
+		"url": "https://github.com/Markonis/clean-text-editor/issues"
+	},
+	"homepage": "https://github.com/Markonis/clean-text-editor#readme"
+}

@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"outDir": "./dist",
+		"strict": true,
+		"noImplicitReturns": true,
+		"sourceMap": true,
+		"esModuleInterop": true,
+		"lib": [
+			"es5",
+			"es2015.promise",
+			"dom"
+		]
+	}
+}
