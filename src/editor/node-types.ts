@@ -1,4 +1,4 @@
-export const headingTags = ['H1', 'H2', 'H3']
+export const headingTags = ['H1', 'H2', 'H3'];
 export const blockTags = [...headingTags, 'P', 'LI'];
 export const listTags = ['UL', 'OL'];
 export const styleTags = ['B', 'STRONG', 'EM', 'I', 'U', 'S'];
@@ -13,7 +13,7 @@ export function isInline(node: Node) {
 }
 
 export function isTag(node: Node, ...tagNames: string[]) {
-	if (node.nodeType !== Node.ELEMENT_NODE) return false;
+	if (node.nodeType !== Node.ELEMENT_NODE) { return false; }
 	const element = node as Element;
 	return tagNames.indexOf(element.tagName) > -1;
 }

@@ -12,7 +12,7 @@ export default class Editor {
 		if (el) {
 			this.element = el;
 		} else {
-			throw `The element with id=${options.elementId} does not exist.`
+			throw new Error(`The element with id=${options.elementId} does not exist.`);
 		}
 		this.init();
 	}
@@ -24,12 +24,12 @@ export default class Editor {
 		this.history.pushState({
 			html: this.element.innerHTML,
 			offset: 0,
-			gravity: 'end'
+			gravity: 'end',
 		});
 
-		this.element.onkeydown = event => {
+		this.element.onkeydown = (event) => {
 			onkeydown(event, this.element, this.history);
-		}
+		};
 
 		this.element.oninput = () => {
 			oninput(this.element, this.history);

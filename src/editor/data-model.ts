@@ -1,21 +1,21 @@
 export interface EditorOptions {
-	elementId: string
+	elementId: string;
 }
 
 export type CaretGravity = 'start' | 'end';
 export type NodeType = 'h' | 'p' | 'ul' | 'ol' | 'li' | 'b' | 'i' | 'em' | 'strong' | 'u' | 'code' | 't';
 
 export interface EditorState {
-	html: string
-	gravity: CaretGravity
-	offset: number
+	html: string;
+	gravity: CaretGravity;
+	offset: number;
 }
 
 export interface EditorNode {
-	type: NodeType
-	blockText: string | null
-	inlineText: string | null
-	level: number | null
-	href: string | null
-	children: EditorNode[] | null
+	type: NodeType;
+	blockText: string | null;
+	inlineText: string | null;
+	level: number | null;
+	href: string | null;
+	children: EditorNode[] | null;
 }

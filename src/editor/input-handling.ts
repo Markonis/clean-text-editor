@@ -1,7 +1,7 @@
-import { EditorState } from "./data-model";
-import { HistoryStack } from "./history-stack";
-import { cleanUp } from "./sanitization";
-import { getCaretGravity, getTextOffset, restoreTextOffset } from "./text-offset";
+import { EditorState } from './data-model';
+import { HistoryStack } from './history-stack';
+import { cleanUp } from './sanitization';
+import { getCaretGravity, getTextOffset, restoreTextOffset } from './text-offset';
 
 export function oninput(
 	editorElement: Element,
@@ -28,7 +28,7 @@ export function onkeydown(event: KeyboardEvent, editorElement: Element, editorHi
 		event.preventDefault();
 		redo(editorElement, editorHistory);
 	} else {
-		setCurrentOffset(getTextOffset(editorElement), editorHistory)
+		setCurrentOffset(getTextOffset(editorElement), editorHistory);
 	}
 }
 
@@ -62,4 +62,3 @@ function isUndoEvent(event: KeyboardEvent) {
 function isRedoEvent(event: KeyboardEvent) {
 	return isCtrlKey(event) && event.keyCode === 89;
 }
-

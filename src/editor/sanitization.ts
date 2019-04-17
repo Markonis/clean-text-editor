@@ -1,12 +1,12 @@
-import { blockTags, listTags, inlineTags, isDiv, isList } from "./node-types";
-import { Config, sanitize } from "dompurify";
+import { Config, sanitize } from 'dompurify';
+import { blockTags, inlineTags, isDiv, isList, listTags } from './node-types';
 
 export const allowedAttr = ['HREF', 'SRC'];
 
 export function cleanUp(rootNode: Element) {
 	sanitizeInnerHtml(rootNode, {
 		ALLOWED_TAGS: ['div', ...blockTags, ...listTags, ...inlineTags],
-		ALLOWED_ATTR: allowedAttr
+		ALLOWED_ATTR: allowedAttr,
 	});
 
 	putTextsIntoParagraphs(rootNode);
@@ -19,10 +19,10 @@ export function sanitizeInnerHtml(element: Element, config: Config) {
 }
 
 export function putTextsIntoParagraphs(parent: Node) {
-	let children = nodeListToArray(parent.childNodes);
-	children.forEach(child => {
+	const children = nodeListToArray(parent.childNodes);
+	children.forEach((child) => {
 		if (child.nodeType === Node.TEXT_NODE) {
-			const paragraph = document.createElement('p')
+			const paragraph = document.createElement('p');
 			parent.insertBefore(paragraph, child);
 			paragraph.appendChild(child);
 		}
@@ -30,40 +30,41 @@ export function putTextsIntoParagraphs(parent: Node) {
 }
 
 export function convertDivsIntoParagraphs(parent: Node) {
-	let children = nodeListToArray(parent.childNodes);
-	children.forEach(child => {
+	const children = nodeListToArray(parent.childNodes);
+	children.forEach((child) => {
 		if (isDiv(child)) {
 			const paragraph = document.createElement('p');
 			parent.insertBefore(paragraph, child);
-			let divChildren = nodeListToArray(child.childNodes);
-			divChildren.forEach(divChild => {
+			const divChildren = nodeListToArray(child.childNodes);
+			divChildren.forEach((divChild) => {
 				paragraph.appendChild(divChild);
 			});
 			parent.removeChild(child);
 		}
-	})
+	});
 }
 
 export function cleanUpChildren(parent: Node) {
-	let children = nodeListToArray(parent.childNodes);
+	const children = nodeListToArray(parent.childNodes);
 
-	children.forEach(child => {
+	children.forEach((child) => {
 		let allowedTags = inlineTags;
-		if (isList(child)) allowedTags = [...allowedTags, 'UL', 'OL', 'LI']
+		if (isList(child)) { allowedTags = [...allowedTags, 'UL', 'OL', 'LI']; }
 
 		const element = child as Element;
 		sanitizeInnerHtml(element, {
 			ALLOWED_TAGS: allowedTags,
-			ALLOWED_ATTR: allowedAttr
+			ALLOWED_ATTR: allowedAttr,
 		});
 
-		if (element.innerHTML === '')
-			element.innerHTML = '<br>'
-	})
+		if (element.innerHTML === '') {
+			element.innerHTML = '<br>';
+		}
+	});
 }
 
 export function nodeListToArray(list: NodeList) {
-	let result: Node[] = [];
-	list.forEach(node => result.push(node));
+	const result: Node[] = [];
+	list.forEach((node) => result.push(node));
 	return result;
 }

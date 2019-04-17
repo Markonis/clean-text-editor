@@ -1,17 +1,17 @@
-import { EditorNode, NodeType } from "./data-model";
-import { blockTags, isHeading, isLink, isParagraph, isTag, isText } from "./node-types";
+import { EditorNode, NodeType } from './data-model';
+import { blockTags, isHeading, isLink, isParagraph, isTag, isText } from './node-types';
 
 export default function childrenDataNodes(node: Node): EditorNode[] {
-	let nodes: EditorNode[] = [];
-	node.childNodes.forEach(child => {
+	const nodes: EditorNode[] = [];
+	node.childNodes.forEach((child) => {
 		nodes.push({
 			type: nodeType(child),
 			blockText: blockText(child),
 			inlineText: inlineText(child),
 			href: nodeHref(child),
 			level: nodeLevel(child),
-			children: childrenDataNodes(child)
-		})
+			children: childrenDataNodes(child),
+		});
 	});
 	return nodes;
 }

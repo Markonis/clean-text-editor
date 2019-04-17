@@ -1,9 +1,9 @@
-import { isImage, isText, isInline, isTag, blockTags } from "./node-types";
-import { CaretGravity } from "./data-model";
+import { CaretGravity } from './data-model';
+import { blockTags, isImage, isInline, isTag, isText } from './node-types';
 
 export function getTextOffset(rootNode: Node): number {
 	const selection = window.getSelection();
-	if (selection === null) return 0;
+	if (selection === null) { return 0; }
 	const range = selection.getRangeAt(0);
 
 	let resultTextOffset = 0;
@@ -25,8 +25,8 @@ export function getTextOffset(rootNode: Node): number {
 			}
 		}
 
-		if (currentContainer.isSameNode(rootNode)) break;
-		if (currentContainer.parentNode === null) break;
+		if (currentContainer.isSameNode(rootNode)) { break; }
+		if (currentContainer.parentNode === null) { break; }
 
 		const parent = currentContainer.parentNode;
 
@@ -43,9 +43,8 @@ export function getTextOffset(rootNode: Node): number {
 	return resultTextOffset;
 }
 
-
 export function restoreTextOffset(rootNode: Node, offset: number = 0, gravity: CaretGravity) {
-	let allChildren: Node[] = [];
+	const allChildren: Node[] = [];
 	getAllChildren(rootNode, allChildren);
 
 	let remainOffset = Math.max(offset, 0);
@@ -60,21 +59,21 @@ export function restoreTextOffset(rootNode: Node, offset: number = 0, gravity: C
 		} else if (i < allChildren.length - 1) {
 			remainOffset -= childTextLength;
 		} else {
-			placeCaret(rootNode, child, remainOffset, gravity)
+			placeCaret(rootNode, child, remainOffset, gravity);
 		}
 	}
 }
 
 export function getCaretGravity(): CaretGravity {
 	const selection = window.getSelection();
-	if (selection === null) return 'start';
+	if (selection === null) { return 'start'; }
 	const range = selection.getRangeAt(0);
 	return range.startOffset === 0 ? 'start' : 'end';
 }
 
 function placeCaret(rootNode: Node, targetNode: Node, offset: number, gravity: CaretGravity) {
 	const selection = window.getSelection();
-	if (selection === null) return;
+	if (selection === null) { return; }
 
 	let calculatedNode = targetNode;
 	let calculatedOffset = targetNode.childNodes.length;
@@ -105,13 +104,13 @@ function nextStartNode(rootNode: Node, node: Node): Node | null {
 	let currentNode: Node | null = node;
 	while (currentNode && !currentNode.isSameNode(rootNode)) {
 		const nextSibling = currentNode.nextSibling;
-		if (nextSibling && isTag(nextSibling, ...blockTags))
-			return currentNode.nextSibling
+		if (nextSibling && isTag(nextSibling, ...blockTags)) {
+			return currentNode.nextSibling;
+		}
 		currentNode = currentNode.parentNode;
 	}
 	return null;
 }
-
 
 function textLength(node: Node) {
 	if (isImage(node)) {
@@ -124,14 +123,14 @@ function textLength(node: Node) {
 }
 
 function getAllChildren(parent: Node, allChildren: Node[] = []) {
-	parent.childNodes.forEach(child => getAllChildren(child, allChildren));
+	parent.childNodes.forEach((child) => getAllChildren(child, allChildren));
 	allChildren.push(parent);
 }
 
 function parentTextLength(parent: Node) {
 	let length = 0;
 
-	parent.childNodes.forEach(child => {
+	parent.childNodes.forEach((child) => {
 		if (isInline(child)) {
 			length += textLength(child);
 		} else {

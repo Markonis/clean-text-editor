@@ -1,3 +1,3 @@
-import Editor from './editor'
+import Editor from './editor';
 
 const editor = new Editor({ elementId: 'editor' });
