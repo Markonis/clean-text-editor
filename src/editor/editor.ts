@@ -1,9 +1,11 @@
+import { EditorApi } from './api';
 import { EditorOptions, EditorState } from './data-model';
 import { HistoryStack } from './history-stack';
 import { oninput, onkeydown } from './input-handling';
 import { cleanUp } from './sanitization';
 
 export default class Editor {
+	public api: EditorApi;
 	private element: HTMLElement;
 	private history: HistoryStack<EditorState> = new HistoryStack();
 
@@ -11,10 +13,15 @@ export default class Editor {
 		const el = document.getElementById(options.elementId);
 		if (el) {
 			this.element = el;
+			this.api = new EditorApi(this.element, this.history);
+			this.init();
 		} else {
 			throw new Error(`The element with id=${options.elementId} does not exist.`);
 		}
-		this.init();
+	}
+
+	public focus() {
+		this.element.focus();
 	}
 
 	private init() {
@@ -28,7 +35,7 @@ export default class Editor {
 		});
 
 		this.element.onkeydown = (event) => {
-			onkeydown(event, this.element, this.history);
+			onkeydown(event, this.api);
 		};
 
 		this.element.oninput = () => {

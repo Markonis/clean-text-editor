@@ -11,6 +11,11 @@ export interface EditorState {
 	offset: number;
 }
 
+export interface EditorData {
+	version: number;
+	children: EditorNode[];
+}
+
 export interface EditorNode {
 	type: NodeType;
 	blockText: string | null;

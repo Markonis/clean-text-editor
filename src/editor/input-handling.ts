@@ -1,54 +1,42 @@
+import { EditorApi } from './api';
 import { EditorState } from './data-model';
 import { HistoryStack } from './history-stack';
 import { cleanUp } from './sanitization';
 import { getCaretGravity, getTextOffset, restoreTextOffset } from './text-offset';
 
 export function oninput(
-	editorElement: Element,
-	editorHistory: HistoryStack<EditorState>) {
+	element: Element,
+	history: HistoryStack<EditorState>) {
 
-	const state = editorHistory.currentState();
-	const offset = getTextOffset(editorElement);
+	const state = history.currentState();
+	const offset = getTextOffset(element);
 	const gravity = getCaretGravity();
 
-	cleanUp(editorElement);
-	const html = editorElement.innerHTML;
+	cleanUp(element);
+	const html = element.innerHTML;
 
 	if (html !== state.html) {
-		editorHistory.pushState({ html, offset, gravity });
-		restoreState(editorElement, editorHistory.currentState());
+		history.pushState({ html, offset, gravity });
+		restoreTextOffset(element, offset, gravity);
 	}
 }
 
-export function onkeydown(event: KeyboardEvent, editorElement: Element, editorHistory: HistoryStack<EditorState>) {
+export function onkeydown(event: KeyboardEvent, api: EditorApi) {
 	if (isUndoEvent(event)) {
 		event.preventDefault();
-		undo(editorElement, editorHistory);
+		api.undo();
 	} else if (isRedoEvent(event)) {
 		event.preventDefault();
-		redo(editorElement, editorHistory);
+		api.redo();
+	} else if (isIndentEvent(event)) {
+		event.preventDefault();
+		api.indent();
+	} else if (isOutdentEvent(event)) {
+		event.preventDefault();
+		api.outdent();
 	} else {
-		setCurrentOffset(getTextOffset(editorElement), editorHistory);
+		api.updateTextOffset();
 	}
-}
-
-export function undo(editorElement: Element, editorHistory: HistoryStack<EditorState>) {
-	editorHistory.undo();
-	restoreState(editorElement, editorHistory.currentState());
-}
-
-export function redo(editorElement: Element, editorHistory: HistoryStack<EditorState>) {
-	editorHistory.redo();
-	restoreState(editorElement, editorHistory.currentState());
-}
-
-function setCurrentOffset(offset: number, editorHistory: HistoryStack<EditorState>) {
-	editorHistory.currentState().offset = offset;
-}
-
-function restoreState(editorElement: Element, state: EditorState) {
-	editorElement.innerHTML = state.html;
-	restoreTextOffset(editorElement, state.offset, state.gravity);
 }
 
 function isCtrlKey(event: KeyboardEvent) {
@@ -61,4 +49,12 @@ function isUndoEvent(event: KeyboardEvent) {
 
 function isRedoEvent(event: KeyboardEvent) {
 	return isCtrlKey(event) && event.keyCode === 89;
+}
+
+function isIndentEvent(event: KeyboardEvent) {
+	return event.keyCode === 9 && !event.shiftKey;
+}
+
+function isOutdentEvent(event: KeyboardEvent) {
+	return event.keyCode === 9 && event.shiftKey;
 }
