@@ -1,5 +1,5 @@
 import { CaretGravity } from './data-model';
-import { blockTags, isImage, isInline, isTag, isText } from './node-types';
+import { blockTags, isImage, isInline, isTag, isText, listTags } from './node-types';
 
 export function getTextOffset(rootNode: Node): number {
 	const selection = window.getSelection();
@@ -104,9 +104,15 @@ function nextStartNode(rootNode: Node, node: Node): Node | null {
 	let currentNode: Node | null = node;
 	while (currentNode && !currentNode.isSameNode(rootNode)) {
 		const nextSibling = currentNode.nextSibling;
-		if (nextSibling && isTag(nextSibling, ...blockTags)) {
-			return currentNode.nextSibling;
+
+		if (nextSibling) {
+			if (isTag(nextSibling, ...blockTags)) {
+				return nextSibling;
+			} else if (isTag(nextSibling, ...listTags)) {
+				return nextSibling.firstChild;
+			}
 		}
+
 		currentNode = currentNode.parentNode;
 	}
 	return null;

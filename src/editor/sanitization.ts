@@ -1,5 +1,5 @@
 import { Config, sanitize } from 'dompurify';
-import { blockTags, inlineTags, isDiv, isList, listTags } from './node-types';
+import { blockTags, inlineTags, isDiv, isList, isTag, listTags } from './node-types';
 
 export const allowedAttr = ['HREF', 'SRC'];
 
@@ -12,6 +12,7 @@ export function cleanUp(rootNode: Element) {
 	putTextsIntoParagraphs(rootNode);
 	convertDivsIntoParagraphs(rootNode);
 	cleanUpChildren(rootNode);
+	putLineBreaks(rootNode);
 }
 
 export function sanitizeInnerHtml(element: Element, config: Config) {
@@ -56,10 +57,21 @@ export function cleanUpChildren(parent: Node) {
 			ALLOWED_ATTR: allowedAttr,
 			ALLOWED_TAGS: allowedTags,
 		});
+	});
+}
 
+export function putLineBreaks(parent: Node) {
+	const children = nodeListToArray(parent.childNodes);
+
+	children.forEach((child) => {
+		if (!isTag(child, ...blockTags, ...listTags)) { return; }
+
+		const element = child as Element;
 		if (element.innerHTML === '') {
 			element.innerHTML = '<br>';
 		}
+
+		putLineBreaks(element);
 	});
 }
 

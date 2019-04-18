@@ -1,9 +1,9 @@
 import { EditorState } from './data-model';
-import { convertBlockElement, ConvertibleBlockType, findConvertibleBlockNode, restoreState } from './editing-operations';
+import { convertBlock, ConvertibleBlockType, insertOrderedList, insertUnorderedList, restoreState } from './editing-operations';
 import { HistoryStack } from './history-stack';
 import { editorData } from './html-to-data';
 import { oninput } from './input-handling';
-import { getTextOffset } from './text-offset';
+import { getTextOffset, restoreTextOffset } from './text-offset';
 
 export class EditorApi {
 
@@ -27,17 +27,7 @@ export class EditorApi {
 	}
 
 	public convertBlock(to: ConvertibleBlockType) {
-		const selection = window.getSelection();
-		if (selection === null) { return; }
-		const range = selection.getRangeAt(0);
-
-		const container = range.startContainer;
-		if (!this.element.contains(container)) { return; }
-
-		const convertibleNode = findConvertibleBlockNode(this.element, container);
-		if (convertibleNode === null) { return; }
-
-		convertBlockElement(convertibleNode, to);
+		convertBlock(this.element, to);
 		oninput(this.element, this.history);
 	}
 
@@ -70,11 +60,11 @@ export class EditorApi {
 	}
 
 	public insertUnorderedList() {
-		document.execCommand('insertUnorderedList');
+		insertUnorderedList(this.element);
 	}
 
 	public insertOrderedList() {
-		document.execCommand('insertOrderedList');
+		insertOrderedList(this.element);
 	}
 
 	public getData() {
@@ -83,6 +73,7 @@ export class EditorApi {
 
 	public updateTextOffset() {
 		const offset = getTextOffset(this.element);
+		// console.log(offset);
 		this.history.currentState().offset = offset;
 	}
 }
