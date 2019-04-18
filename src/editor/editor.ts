@@ -1,7 +1,7 @@
-import { EditorOptions, EditorState } from './editor/data-model';
-import { HistoryStack } from './editor/history-stack';
-import { oninput, onkeydown } from './editor/input-handling';
-import { cleanUp } from './editor/sanitization';
+import { EditorOptions, EditorState } from './data-model';
+import { HistoryStack } from './history-stack';
+import { oninput, onkeydown } from './input-handling';
+import { cleanUp } from './sanitization';
 
 export default class Editor {
 	private element: HTMLElement;
@@ -22,9 +22,9 @@ export default class Editor {
 		cleanUp(this.element);
 
 		this.history.pushState({
+			gravity: 'end',
 			html: this.element.innerHTML,
 			offset: 0,
-			gravity: 'end',
 		});
 
 		this.element.onkeydown = (event) => {

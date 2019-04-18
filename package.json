@@ -2,9 +2,12 @@
 	"name": "@markonis/clean-text-editor",
 	"version": "0.0.1",
 	"description": "A simple no-fuss WYSIWYG editor written in typescript",
-	"main": "index.js",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"scripts": {
-		"start": "parcel src/index.html"
+		"start": "parcel src/example/index.html",
+		"build": "tsc",
+		"prepublishOnly": "npm run build"
 	},
 	"author": "Marko Pavlović <marko@affine.tech> (https://affine.tech)",
 	"license": "MIT",

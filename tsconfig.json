@@ -1,5 +1,8 @@
 {
 	"compilerOptions": {
+		"target": "es5",
+		"module": "commonjs",
+		"declaration": true,
 		"outDir": "./dist",
 		"strict": true,
 		"noImplicitReturns": true,
@@ -10,5 +13,8 @@
 			"es2015.promise",
 			"dom"
 		]
-	}
+	},
+	"include": [
+		"./src/index.ts"
+	]
 }

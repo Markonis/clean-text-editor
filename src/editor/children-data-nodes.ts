@@ -5,12 +5,12 @@ export default function childrenDataNodes(node: Node): EditorNode[] {
 	const nodes: EditorNode[] = [];
 	node.childNodes.forEach((child) => {
 		nodes.push({
-			type: nodeType(child),
 			blockText: blockText(child),
-			inlineText: inlineText(child),
-			href: nodeHref(child),
-			level: nodeLevel(child),
 			children: childrenDataNodes(child),
+			href: nodeHref(child),
+			inlineText: inlineText(child),
+			level: nodeLevel(child),
+			type: nodeType(child),
 		});
 	});
 	return nodes;
@@ -55,7 +55,7 @@ function nodeHref(node: Node): string | null {
 function nodeLevel(node: Node): number | null {
 	if (isHeading(node)) {
 		const match = (node as Element).tagName.match(/\d+/);
-		return match ? parseInt(match[0]) : null;
+		return match ? parseInt(match[0], 10) : null;
 	} else {
 		return null;
 	}

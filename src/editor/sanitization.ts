@@ -5,8 +5,8 @@ export const allowedAttr = ['HREF', 'SRC'];
 
 export function cleanUp(rootNode: Element) {
 	sanitizeInnerHtml(rootNode, {
-		ALLOWED_TAGS: ['div', ...blockTags, ...listTags, ...inlineTags],
 		ALLOWED_ATTR: allowedAttr,
+		ALLOWED_TAGS: ['div', ...blockTags, ...listTags, ...inlineTags],
 	});
 
 	putTextsIntoParagraphs(rootNode);
@@ -53,8 +53,8 @@ export function cleanUpChildren(parent: Node) {
 
 		const element = child as Element;
 		sanitizeInnerHtml(element, {
-			ALLOWED_TAGS: allowedTags,
 			ALLOWED_ATTR: allowedAttr,
+			ALLOWED_TAGS: allowedTags,
 		});
 
 		if (element.innerHTML === '') {
