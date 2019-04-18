@@ -1,3 +1,3 @@
 src
 .cache
-dist/example/*
+dist/example*
