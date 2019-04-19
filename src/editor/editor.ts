@@ -9,14 +9,14 @@ export default class Editor {
 	private element: HTMLElement;
 	private history: HistoryStack<EditorState> = new HistoryStack();
 
-	constructor(options: EditorOptions) {
-		const el = document.getElementById(options.elementId);
+	constructor(private options: EditorOptions) {
+		const el = document.getElementById(this.options.elementId);
 		if (el) {
 			this.element = el;
 			this.api = new EditorApi(this.element, this.history);
 			this.init();
 		} else {
-			throw new Error(`The element with id=${options.elementId} does not exist.`);
+			throw new Error(`The element with id=${this.options.elementId} does not exist.`);
 		}
 	}
 
@@ -40,6 +40,9 @@ export default class Editor {
 
 		this.element.oninput = () => {
 			oninput(this.element, this.history);
+			if (this.options.oninput) {
+				this.options.oninput();
+			}
 		};
 	}
 }
