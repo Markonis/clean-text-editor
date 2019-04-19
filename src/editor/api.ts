@@ -1,9 +1,10 @@
-import { EditorState } from './data-model';
+import { EditorState, EditorData } from './data-model';
 import { convertBlock, ConvertibleBlockType, insertOrderedList, insertUnorderedList, restoreState } from './editing-operations';
 import { HistoryStack } from './history-stack';
 import { editorData } from './html-to-data';
 import { oninput } from './input-handling';
-import { getTextOffset, restoreTextOffset } from './text-offset';
+import render from './render';
+import { getTextOffset } from './text-offset';
 
 export class EditorApi {
 
@@ -73,7 +74,10 @@ export class EditorApi {
 
 	public updateTextOffset() {
 		const offset = getTextOffset(this.element);
-		// console.log(offset);
 		this.history.currentState().offset = offset;
+	}
+
+	public render(data: EditorData) {
+		render(this.element, data);
 	}
 }
