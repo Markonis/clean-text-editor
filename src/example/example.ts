@@ -48,6 +48,10 @@ document.querySelectorAll('#toolbar button').forEach((element) => {
 			case 'P':
 				editor.api.convertBlock('P');
 				return;
+			case 'getSelectionData':
+				const selectionData = editor.api.getSelectionData();
+				console.log(selectionData);
+				return;
 		}
 	};
 });
