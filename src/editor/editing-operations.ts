@@ -66,33 +66,34 @@ export function getSelectionData(rootElement: Element) {
 	let container = getCurrentContainer(rootElement);
 	while (container && !container.isSameNode(rootElement)) {
 
-		if (isText(container)) { continue; }
-		const element = container as Element;
+		if (!isText(container)) {
+			const element = container as Element;
 
-		if (isTag(element, 'H1')) {
-			result.blockNodeType = 'h';
-			result.blockNodeLevel = 1;
-		} else if (isTag(element, 'H2')) {
-			result.blockNodeType = 'h';
-			result.blockNodeLevel = 2;
-		} else if (isTag(element, 'H3')) {
-			result.blockNodeType = 'h';
-			result.blockNodeLevel = 3;
-		} else if (isTag(element, 'UL')) {
-			result.blockNodeType = 'ul';
-		} else if (isTag(element, 'OL')) {
-			result.blockNodeType = 'ol';
-		} else if (isTag(element, 'B')) {
-			result.bold = true;
-		} else if (isTag(element, 'I')) {
-			result.italic = true;
-		} else if (isTag(element, 'U')) {
-			result.underline = true;
-		} else if (isTag(element, 'A')) {
-			result.link = {
-				href: element.getAttribute('href'),
-				present: true,
-			};
+			if (isTag(element, 'H1')) {
+				result.blockNodeType = 'h';
+				result.blockNodeLevel = 1;
+			} else if (isTag(element, 'H2')) {
+				result.blockNodeType = 'h';
+				result.blockNodeLevel = 2;
+			} else if (isTag(element, 'H3')) {
+				result.blockNodeType = 'h';
+				result.blockNodeLevel = 3;
+			} else if (isTag(element, 'UL')) {
+				result.blockNodeType = 'ul';
+			} else if (isTag(element, 'OL')) {
+				result.blockNodeType = 'ol';
+			} else if (isTag(element, 'B')) {
+				result.bold = true;
+			} else if (isTag(element, 'I')) {
+				result.italic = true;
+			} else if (isTag(element, 'U')) {
+				result.underline = true;
+			} else if (isTag(element, 'A')) {
+				result.link = {
+					href: element.getAttribute('href'),
+					present: true,
+				};
+			}
 		}
 
 		container = container.parentNode;
