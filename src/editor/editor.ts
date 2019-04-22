@@ -43,13 +43,16 @@ export default class Editor {
 		}
 
 		this.element.onkeydown = (event) => {
+			if (this.options.onkeydown) {
+				this.options.onkeydown(event);
+			}
 			onkeydown(event, this.api);
 		};
 
-		this.element.oninput = () => {
+		this.element.oninput = (event: Event) => {
 			oninput(this.element, this.history);
 			if (this.options.oninput) {
-				this.options.oninput();
+				this.options.oninput(event);
 			}
 		};
 	}
