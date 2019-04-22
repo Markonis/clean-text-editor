@@ -34,6 +34,14 @@ export default class Editor {
 			offset: 0,
 		});
 
+		if (this.options.onfocus) {
+			this.element.onfocus = this.options.onfocus;
+		}
+
+		if (this.options.onblur) {
+			this.element.onblur = this.options.onblur;
+		}
+
 		this.element.onkeydown = (event) => {
 			onkeydown(event, this.api);
 		};

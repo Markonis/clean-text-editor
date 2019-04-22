@@ -1,6 +1,8 @@
 export interface EditorOptions {
 	elementId: string;
 	oninput?: () => void;
+	onfocus?: () => void;
+	onblur?: () => void;
 }
 
 export type CaretGravity = 'start' | 'end';
