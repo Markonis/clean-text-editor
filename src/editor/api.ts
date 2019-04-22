@@ -1,5 +1,5 @@
-import { EditorState, EditorData } from './data-model';
-import { convertBlock, ConvertibleBlockType, insertOrderedList, insertUnorderedList, restoreState } from './editing-operations';
+import { EditorData, EditorState, SelectionData } from './data-model';
+import { convertBlock, ConvertibleBlockType, getSelectionData, insertOrderedList, insertUnorderedList, restoreState } from './editing-operations';
 import { HistoryStack } from './history-stack';
 import { editorData } from './html-to-data';
 import { oninput } from './input-handling';
@@ -79,5 +79,9 @@ export class EditorApi {
 
 	public render(data: EditorData) {
 		render(this.element, data);
+	}
+
+	public getSelectionData(): SelectionData | null {
+		return getSelectionData(this.element);
 	}
 }

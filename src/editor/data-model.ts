@@ -14,6 +14,18 @@ export interface EditorState {
 	offset: number;
 }
 
+export interface SelectionData {
+	blockNodeType: 'h' | 'p' | 'ul' | 'ol';
+	blockNodeLevel: number;
+	bold: boolean;
+	italic: boolean;
+	underline: boolean;
+	link: {
+		present: boolean;
+		href: string | null
+	};
+}
+
 export interface EditorData {
 	version: number;
 	children: EditorNode[];

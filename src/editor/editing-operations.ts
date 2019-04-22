@@ -1,5 +1,5 @@
-import { EditorState } from './data-model';
-import { isTag } from './node-types';
+import { EditorState, SelectionData } from './data-model';
+import { isTag, isText } from './node-types';
 import { restoreTextOffset } from './text-offset';
 
 export type ConvertibleBlockType = 'H1' | 'H2' | 'H3' | 'P';
@@ -50,6 +50,57 @@ export function insertOrderedList(rootElement: Element) {
 	insertList(rootElement, 'ol');
 }
 
+export function getSelectionData(rootElement: Element) {
+	const result: SelectionData = {
+		blockNodeLevel: 1,
+		blockNodeType: 'p',
+		bold: false,
+		italic: false,
+		link: {
+			href: '',
+			present: false,
+		},
+		underline: false,
+	};
+
+	let container = getCurrentContainer(rootElement);
+	while (container && !container.isSameNode(rootElement)) {
+
+		if (isText(container)) { continue; }
+		const element = container as Element;
+
+		if (isTag(element, 'H1')) {
+			result.blockNodeType = 'h';
+			result.blockNodeLevel = 1;
+		} else if (isTag(element, 'H2')) {
+			result.blockNodeType = 'h';
+			result.blockNodeLevel = 2;
+		} else if (isTag(element, 'H3')) {
+			result.blockNodeType = 'h';
+			result.blockNodeLevel = 3;
+		} else if (isTag(element, 'UL')) {
+			result.blockNodeType = 'ul';
+		} else if (isTag(element, 'OL')) {
+			result.blockNodeType = 'ol';
+		} else if (isTag(element, 'B')) {
+			result.bold = true;
+		} else if (isTag(element, 'I')) {
+			result.italic = true;
+		} else if (isTag(element, 'U')) {
+			result.underline = true;
+		} else if (isTag(element, 'A')) {
+			result.link = {
+				href: element.getAttribute('href'),
+				present: true,
+			};
+		}
+
+		container = container.parentNode;
+	}
+
+	return result;
+}
+
 function insertList(rootElement: Element, tagName: ListType) {
 	withCurrentContainer(rootElement, (node: Node) => {
 		const convertibleNode = findConvertibleBlockNode(rootElement, node);
@@ -85,12 +136,16 @@ function placeCaretAtEnd(node: Node) {
 	selection.addRange(range);
 }
 
-function withCurrentContainer(rootElement: Element, fn: (node: Node) => void) {
+function getCurrentContainer(rootElement: Element) {
 	const selection = window.getSelection();
-	if (selection === null) { return; }
+	if (selection === null) { return null; }
 	const range = selection.getRangeAt(0);
-
 	const container = range.startContainer;
-	if (!rootElement.contains(container)) { return; }
-	fn(container);
+	if (!rootElement.contains(container)) { return null; }
+	return container;
+}
+
+function withCurrentContainer(rootElement: Element, fn: (node: Node) => void) {
+	const container = getCurrentContainer(rootElement);
+	if (container) { fn(container); }
 }
