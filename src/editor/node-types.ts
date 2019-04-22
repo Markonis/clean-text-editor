@@ -1,7 +1,7 @@
 export const headingTags = ['H1', 'H2', 'H3'];
 export const blockTags = [...headingTags, 'P', 'LI'];
 export const listTags = ['UL', 'OL'];
-export const styleTags = ['B', 'STRONG', 'EM', 'I', 'U', 'S'];
+export const styleTags = ['B', 'I', 'U', 'S'];
 export const inlineTags = ['A', 'CODE', ...styleTags];
 
 export function isText(node: Node) {

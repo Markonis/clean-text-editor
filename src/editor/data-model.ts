@@ -4,7 +4,7 @@ export interface EditorOptions {
 }
 
 export type CaretGravity = 'start' | 'end';
-export type NodeType = 'h' | 'p' | 'ul' | 'ol' | 'li' | 'a' | 'b' | 'i' | 'em' | 'strong' | 'u' | 'code' | 't';
+export type NodeType = 'h' | 'p' | 'ul' | 'ol' | 'li' | 'a' | 'b' | 'i' | 'u' | 'code' | 't';
 
 export interface EditorState {
 	html: string;
